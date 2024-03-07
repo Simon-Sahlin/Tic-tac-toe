@@ -1,5 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+:root {
+    --red: #ff3860;
+    --red-dark: #ff1443;
+    --red-darker: #c00f32;
+    --red-light: #ff5c7c;
+    --blue: #498afb;
+    --blue-dark: #2674fa;
+    --blue-light: #6ca0fc;
+    --orange: #fa8142;
+    --orange-dark: #f96a1f;
+    --orange-light: #fb9865;
+    --green: #09c372;
+    --green-dark: #07a15e;
+    --green-darker: #05633a;
+    --green-light: #0be586;
+    --purple: #9166cc;
+    --purple-dark: #7d4bc3;
+    --purple-light: #a481d5;
+    --pink: #ff4088;
+    --pink-dark: #ff1c72;
+    --pink-light: #ff649e;
+    --gray0: #f8f8f8;
+    --gray1: #dbe1e8;
+    --gray2: #b2becd;
+    --gray3: #6c7983;
+    --gray4: #454e56;
+    --gray5: #2a2e35;
+    --gray5t: #0000005b;
+    --gray6: #12181b;
+    --gray7: #0b0d0e;
+    --font-body: "sofia-pro",sans-serif;
+    --font-head: 'Poppins', sans-serif;
+    --font-code: "attribute-mono",monospace;
+}
+
+
+
+/* ------------------------------------ - ----------------------------------- */
+
+body{
+    background-color: var(--gray7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
+}
+h1{
+    color: white;
+    font-family: var(--font-head);
+}
+
+#gameWrapper{
+    background-color: var(--gray6);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 70vh;
+    width: 70vh;
+    border: 2px solid var(--gray4);
+    border-radius: 4px;
+}
+
+#gameWrapper div{
+    border: 4px solid var(--gray4);
 }
