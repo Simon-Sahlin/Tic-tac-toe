@@ -78,7 +78,14 @@ let screenController = (function(){
         gameBoard.cells[id].element.innerHTML = gameBoard.cells[id].sign;
     }
 
-    return({updateCell})
+    let messageWrapper = document.querySelector("#messageWrapper");
+    let messageText = document.querySelector("#messageWrapper>h2");
+    let showMessage = (msg) => {
+        messageText.innerHTML = msg;
+        messageWrapper.classList.remove("hidden");
+    }
+
+    return({updateCell, showMessage})
 })();
 
 function gameCell(id){
