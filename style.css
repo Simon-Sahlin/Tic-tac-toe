@@ -72,4 +72,10 @@ h1{
 
 #gameWrapper div{
     border: 4px solid var(--gray4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: var(--font-head);
+    font-size: 5em;
 }
