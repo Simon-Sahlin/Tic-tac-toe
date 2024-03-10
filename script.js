@@ -39,6 +39,7 @@ let gameManager = (function(){
         player1 = new player(names[0]);
         player2 = new player(names[1]);
         screenController.hideSetup();
+        screenController.updateHeader(`<em>${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
     }
 
     let makeMove = (id)=>{
@@ -47,6 +48,7 @@ let gameManager = (function(){
         gameBoard.place(id, sign());
         screenController.updateCell(id);
         addTurn();
+        screenController.updateHeader(`<em>${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
         if (hasWon())
             screenController.showMessage(`<em>${turn == 1 ? player1.name : player2.name}</em> Wins!`)
         if (gameBoard.isFull())
@@ -127,6 +129,11 @@ let screenController = (function(){
         gameBoard.cells[id].element.innerHTML = gameBoard.cells[id].sign;
     }
 
+    let header = document.querySelector("h1");
+    let updateHeader = (msg) => {
+        header.innerHTML = msg;
+    }
+
     let messageWrapper = document.querySelector("#messageWrapper");
     let messageText = document.querySelector("#messageWrapper>h2");
     let showMessage = (msg) => {
@@ -144,7 +151,7 @@ let screenController = (function(){
         gameManager.resetGame();
     });
 
-    return({updateCell, showMessage, getNames, hideSetup})
+    return({updateCell, showMessage, getNames, hideSetup, updateHeader})
 })();
 
 function gameCell(id){
