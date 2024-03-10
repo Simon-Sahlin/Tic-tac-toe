@@ -9,6 +9,22 @@
     <script src="script.js" defer></script>
 </head>
 <body>
+    <div id="setupWrapper">
+        <h2>Welcome to <em>Tic-Tac-Toe!</em></h2>
+        <h3>Choose Your Players:</h3>
+        <div>
+            <form action="">
+                <label for="player1">Player 1 Name</label>
+                <input type="text" id="player1" name="player1">
+            </form>
+            <form action="">
+                <label for="player1">Player 2 Name</label>
+                <input type="text" id="player2" name="player2">
+            </form>
+        </div>
+        <button>START GAME</button>
+    </div>
+
     <h1>Welcome to Tic-Tac-Toe!</h1>
     <div id="gameWrapper">
         <div></div>
@@ -22,7 +38,7 @@
         <div></div>
     </div>
 
-    <div id="messageWrapper">
+    <div id="messageWrapper" class="hidden">
         <h2><em>Player 1</em> Wins</h2>
         <button>RESTART</button>
     </div>

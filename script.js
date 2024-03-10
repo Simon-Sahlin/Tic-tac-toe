@@ -1,5 +1,7 @@
 let gameManager = (function(){
     let turn = 0;
+    let player1;
+    let player2;
 
     function addTurn(){
         turn++;
@@ -32,6 +34,13 @@ let gameManager = (function(){
         return false;
     }
 
+    let startGame = () => {
+        let names = screenController.getNames();
+        player1 = new player(names[0]);
+        player2 = new player(names[1]);
+        screenController.hideSetup();
+    }
+
     let makeMove = (id)=>{
         if (gameBoard.isChecked(id))
             return;
@@ -39,7 +48,7 @@ let gameManager = (function(){
         screenController.updateCell(id);
         addTurn();
         if (hasWon())
-            screenController.showMessage(`<em>Player ${turn == 0 ? "O" : "X"}</em> Wins!`)
+            screenController.showMessage(`<em>${turn == 1 ? player1.name : player2.name}</em> Wins!`)
         if (gameBoard.isFull())
             screenController.showMessage(`It's a Tie!`)
     }
@@ -49,7 +58,7 @@ let gameManager = (function(){
         gameBoard.clearBoard();
     }
 
-    return({makeMove, resetGame})
+    return({makeMove, resetGame, startGame})
 })();
 
 let gameBoard = (function(){
@@ -98,6 +107,22 @@ let screenController = (function(){
         })
     });
 
+    let startButton = document.querySelector("#setupWrapper>button");
+    startButton.addEventListener("click", ()=>{
+        gameManager.startGame();
+    });
+
+    let getNames = () => {
+        player1Name = document.querySelector("#player1").value;
+        player2Name = document.querySelector("#player2").value;
+        return [player1Name, player2Name]
+    }
+
+    let setupWrapper = document.querySelector("#setupWrapper")
+    let hideSetup = () => {
+        setupWrapper.classList.add("hidden");
+    }
+
     let updateCell = (id) =>{
         gameBoard.cells[id].element.innerHTML = gameBoard.cells[id].sign;
     }
@@ -109,16 +134,17 @@ let screenController = (function(){
         messageWrapper.classList.remove("hidden");
     }
 
-    let messagebutton = document.querySelector("#messageWrapper>button");
     let hideMessage = () => {
         messageWrapper.classList.add("hidden")
     }
+
+    let messagebutton = document.querySelector("#messageWrapper>button");
     messagebutton.addEventListener("click", () =>{
         hideMessage();
         gameManager.resetGame();
     });
 
-    return({updateCell, showMessage})
+    return({updateCell, showMessage, getNames, hideSetup})
 })();
 
 function gameCell(id){
@@ -126,4 +152,8 @@ function gameCell(id){
     this.checked = false;
     this.sign = "";
     this.element = document.querySelector(`#gameWrapper>div:nth-child(${id+1})`);
+}
+
+function player(name){
+    this.name = name;
 }

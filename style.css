@@ -54,7 +54,7 @@ body{
     justify-content: space-evenly;
     height: 100vh;
 }
-h1,h2{
+h1,h2,h3,label,input{
     color: white;
     font-family: var(--font-head);
 }
@@ -118,5 +118,55 @@ button:active{
 }
 #messageWrapper.hidden{
     opacity: 0;
-    top: -200vh;
+    pointer-events: none
+}
+
+
+#setupWrapper{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .6);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s;
+}
+#setupWrapper h2{
+    font-size: 5em;
+}
+#setupWrapper h3{
+    font-size: 3em;
+    margin-top: -20px;
+}
+#setupWrapper > div{
+    display: flex;
+    gap: 50px;
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+}
+form label{
+    font-size: 2em;
+}
+form input{
+    background-color: var(--gray6);
+    border: 2px solid var(--gray4);
+    border-radius: 9999px;
+    font-size: 1.5em;
+    padding: 2px 15px;
+}
+#setupWrapper button{
+    background-color: var(--green-dark);
+    text-shadow: 3px 3px 0px var(--green);
+}
+
+#setupWrapper.hidden{
+    opacity: 0;
+    pointer-events: none
 }
