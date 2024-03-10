@@ -44,7 +44,12 @@ let gameManager = (function(){
             screenController.showMessage(`It's a Tie!`)
     }
 
-    return({makeMove})
+    let resetGame = () => {
+        turn = 0;
+        gameBoard.clearBoard();
+    }
+
+    return({makeMove, resetGame})
 })();
 
 let gameBoard = (function(){
@@ -73,7 +78,16 @@ let gameBoard = (function(){
         }
         return true;
     }
-    return({cells, isChecked, place, getSign, isFull})
+
+    let clearBoard = () => {
+        for (let i = 0; i < 9; i++) {
+            cells[i].sign = "";
+            cells[i].checked = false;
+            screenController.updateCell(i);
+        }
+    }
+
+    return({cells, isChecked, place, getSign, isFull, clearBoard})
 })();
 
 let screenController = (function(){
@@ -99,7 +113,10 @@ let screenController = (function(){
     let hideMessage = () => {
         messageWrapper.classList.add("hidden")
     }
-    messagebutton.addEventListener("click", hideMessage)
+    messagebutton.addEventListener("click", () =>{
+        hideMessage();
+        gameManager.resetGame();
+    });
 
     return({updateCell, showMessage})
 })();
