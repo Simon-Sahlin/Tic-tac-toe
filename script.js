@@ -56,7 +56,7 @@ let gameManager = (function(){
     }
 
     let resetGame = () => {
-        turn = 0;
+        turn = Math.floor(Math.random() * 2);
         gameBoard.clearBoard();
     }
 
