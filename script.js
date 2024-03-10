@@ -37,8 +37,9 @@ let gameManager = (function(){
     let startGame = () => {
         turn = Math.floor(Math.random() * 2);
         let names = screenController.getNames();
-        player1 = new player(names[0]);
-        player2 = new player(names[1]);
+        player1 = new player(names[0], 0);
+        player2 = new player(names[1], 1);
+        console.log(player1.color)
         screenController.hideSetup();
         screenController.updateHeader(`<em>${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
     }
@@ -152,7 +153,13 @@ let screenController = (function(){
         gameManager.resetGame();
     });
 
-    return({updateCell, showMessage, getNames, hideSetup, updateHeader})
+    let colorWrappers = document.querySelectorAll(".colors");
+    let ColorSelectors = [];
+    colorWrappers.forEach((wrapper)=>{
+        ColorSelectors.push(new colorSelector(wrapper))
+    });
+
+    return({updateCell, showMessage, getNames, hideSetup, updateHeader, ColorSelectors})
 })();
 
 function gameCell(id){
@@ -162,8 +169,9 @@ function gameCell(id){
     this.element = document.querySelector(`#gameWrapper>div:nth-child(${id+1})`);
 }
 
-function player(name){
+function player(name, id){
     this.name = name;
+    this.color = screenController.ColorSelectors[id].selectedColor;
 }
 
 
@@ -186,6 +194,7 @@ function colorSelector(parent){
         parent.children[selectedIndex].classList.remove("selected");
         selectedIndex = index;
         this.selectedColor = colors[index];
+        console.log({selectedIndex, selectedColor, index})
         parent.children[selectedIndex].classList.add("selected");
     }
     selectColor(selectedIndex);
@@ -197,9 +206,3 @@ function colorSelector(parent){
         parent.children[i].style.backgroundColor = colors[i];
     }
 }
-
-let colorWrappers = document.querySelectorAll(".colors");
-let ColorSelectors = [];
-colorWrappers.forEach((wrapper)=>{
-    ColorSelectors.push(new colorSelector(wrapper))
-});
