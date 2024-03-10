@@ -39,7 +39,9 @@ let gameManager = (function(){
         screenController.updateCell(id);
         addTurn();
         if (hasWon())
-            console.log("WIN");
+            screenController.showMessage(`<em>Player ${turn == 0 ? "O" : "X"}</em> Wins!`)
+        if (gameBoard.isFull())
+            screenController.showMessage(`It's a Tie!`)
     }
 
     return({makeMove})
@@ -63,7 +65,15 @@ let gameBoard = (function(){
         cells[id].checked = true;
         cells[id].sign = sign;
     }
-    return({cells, isChecked, place, getSign})
+
+    let isFull = () => {
+        for (let i = 0; i < 9; i++) {
+            if (!getSign(i))
+                return false
+        }
+        return true;
+    }
+    return({cells, isChecked, place, getSign, isFull})
 })();
 
 let screenController = (function(){
@@ -84,6 +94,12 @@ let screenController = (function(){
         messageText.innerHTML = msg;
         messageWrapper.classList.remove("hidden");
     }
+
+    let messagebutton = document.querySelector("#messageWrapper>button");
+    let hideMessage = () => {
+        messageWrapper.classList.add("hidden")
+    }
+    messagebutton.addEventListener("click", hideMessage)
 
     return({updateCell, showMessage})
 })();
