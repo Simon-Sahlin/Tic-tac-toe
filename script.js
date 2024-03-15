@@ -91,7 +91,7 @@ let gameManager = (function(){
         addTurn();
         screenController.updateHeader(`<em style="color: ${turn == 1 ? player1.color : player2.color};">${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
         if (hasWon())
-            screenController.showMessage(`<em style="color: ${turn == 1 ? player1.color : player2.color};">${turn == 1 ? player1.name : player2.name}</em> Wins!`)
+            screenController.showMessage(`<em style="color: ${turn == 0 ? player1.color : player2.color};">${turn == 0 ? player1.name : player2.name}</em> Wins!`)
         if (gameBoard.isFull())
             screenController.showMessage(`It's a Tie!`)
     }
