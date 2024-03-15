@@ -1,3 +1,42 @@
+let colorSelector = (parent) => {
+    let style = getComputedStyle(document.documentElement)
+    let colors = [
+        style.getPropertyValue('--red'),
+        style.getPropertyValue('--orange'),
+        style.getPropertyValue('--green'),
+        style.getPropertyValue('--blue'),
+        style.getPropertyValue('--purple'),
+        style.getPropertyValue('--pink'),
+    ]
+    let selectedIndex = Math.floor(Math.random() * 6);
+    let selectedColor = colors[selectedIndex];
+
+    let getColor = () =>{
+        return selectedColor;
+    }
+
+    let selectColor = (index) => {
+        parent.children[selectedIndex].classList.remove("selected");
+        selectedIndex = index;
+        selectedColor = colors[index];
+        // console.log({selectedIndex, selectedColor, index})
+        parent.children[selectedIndex].classList.add("selected");
+    }
+    selectColor(selectedIndex);
+
+    for (let i = 0; i < parent.childElementCount; i++) {
+        parent.children[i].addEventListener("click", ()=>{
+            selectColor(i);
+        });
+        parent.children[i].style.backgroundColor = colors[i];
+    }
+
+    return{selectedColor, selectColor, selectedIndex, getColor}
+}
+
+/* ------------------------------------ - ----------------------------------- */
+
+
 let gameManager = (function(){
     let turn = 0;
     let player1;
@@ -39,20 +78,20 @@ let gameManager = (function(){
         let names = screenController.getNames();
         player1 = new player(names[0], 0);
         player2 = new player(names[1], 1);
-        console.log(player1.color)
+        // console.log(player1.color)
         screenController.hideSetup();
-        screenController.updateHeader(`<em>${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
+        screenController.updateHeader(`<em style="color: ${turn == 1 ? player1.color : player2.color};">${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
     }
 
     let makeMove = (id)=>{
         if (gameBoard.isChecked(id))
             return;
         gameBoard.place(id, sign());
-        screenController.updateCell(id);
+        screenController.updateCell(id, turn == 1 ? player1.color : player2.color);
         addTurn();
-        screenController.updateHeader(`<em>${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
+        screenController.updateHeader(`<em style="color: ${turn == 1 ? player1.color : player2.color};">${turn == 1 ? player1.name : player2.name}</em>'s Turn!`);
         if (hasWon())
-            screenController.showMessage(`<em>${turn == 1 ? player1.name : player2.name}</em> Wins!`)
+            screenController.showMessage(`<em style="color: ${turn == 1 ? player1.color : player2.color};">${turn == 1 ? player1.name : player2.name}</em> Wins!`)
         if (gameBoard.isFull())
             screenController.showMessage(`It's a Tie!`)
     }
@@ -127,8 +166,9 @@ let screenController = (function(){
         setupWrapper.classList.add("hidden");
     }
 
-    let updateCell = (id) =>{
+    let updateCell = (id, color) =>{
         gameBoard.cells[id].element.innerHTML = gameBoard.cells[id].sign;
+        gameBoard.cells[id].element.style.color = color
     }
 
     let header = document.querySelector("h1");
@@ -156,7 +196,7 @@ let screenController = (function(){
     let colorWrappers = document.querySelectorAll(".colors");
     let ColorSelectors = [];
     colorWrappers.forEach((wrapper)=>{
-        ColorSelectors.push(new colorSelector(wrapper))
+        ColorSelectors.push(colorSelector(wrapper))
     });
 
     return({updateCell, showMessage, getNames, hideSetup, updateHeader, ColorSelectors})
@@ -171,38 +211,9 @@ function gameCell(id){
 
 function player(name, id){
     this.name = name;
-    this.color = screenController.ColorSelectors[id].selectedColor;
+    this.color = screenController.ColorSelectors[id].getColor();
+    // console.log(screenController.ColorSelectors[id]);
 }
 
 
 /* ------------------------------------ - ----------------------------------- */
-
-function colorSelector(parent){
-    let style = getComputedStyle(document.documentElement)
-    let colors = [
-        style.getPropertyValue('--red'),
-        style.getPropertyValue('--orange'),
-        style.getPropertyValue('--green'),
-        style.getPropertyValue('--blue'),
-        style.getPropertyValue('--purple'),
-        style.getPropertyValue('--pink'),
-    ]
-    let selectedIndex = Math.floor(Math.random() * 6);
-    this.selectedColor = colors[selectedIndex];
-
-    function selectColor(index){
-        parent.children[selectedIndex].classList.remove("selected");
-        selectedIndex = index;
-        this.selectedColor = colors[index];
-        console.log({selectedIndex, selectedColor, index})
-        parent.children[selectedIndex].classList.add("selected");
-    }
-    selectColor(selectedIndex);
-
-    for (let i = 0; i < parent.childElementCount; i++) {
-        parent.children[i].addEventListener("click", ()=>{
-            selectColor(i);
-        });
-        parent.children[i].style.backgroundColor = colors[i];
-    }
-}
